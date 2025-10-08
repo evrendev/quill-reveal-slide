@@ -28,32 +28,32 @@ npm install quill-reveal-slide
 ### Setup
 
 ```javascript
-import Quill from 'quill';
-import { FragmentBlot } from 'quill-reveal-slide';
-import 'quill/dist/quill.snow.css';
-import 'quill-reveal-slide/style.css';
+import Quill from "quill";
+import { FragmentBlot } from "quill-reveal-slide";
+import "quill/dist/quill.snow.css";
+import "quill-reveal-slide/style.css";
 
 // Register the fragment format
 Quill.register({
-  'formats/fragment': FragmentBlot,
+  "formats/fragment": FragmentBlot,
 });
 
 // Initialize Quill with custom toolbar
-const quill = new Quill('#editor', {
-  theme: 'snow',
+const quill = new Quill("#editor", {
+  theme: "snow",
   modules: {
     toolbar: {
       container: [
-        ['bold', 'italic'], 
-        ['link'],
-        [{ 'custom-fragment': 'Fragment' }]  // Fragment button
+        ["bold", "italic"],
+        ["link"],
+        [{ "custom-fragment": "Fragment" }], // Fragment button
       ],
       handlers: {
-        'custom-fragment': function() {
+        "custom-fragment": function () {
           handleFragmentCreation(this.quill);
-        }
-      }
-    }
+        },
+      },
+    },
   },
 });
 ```
@@ -69,11 +69,14 @@ const quill = new Quill('#editor', {
 ### Export to Reveal.js
 
 ```javascript
-import { RevealExporter } from 'quill-reveal-slide';
+import { RevealExporter } from "quill-reveal-slide";
 
 // Export current editor content
 const contents = quill.getContents();
-const slideHTML = RevealExporter.generateRevealSlide(contents, "My Slide Title");
+const slideHTML = RevealExporter.generateRevealSlide(
+  contents,
+  "My Slide Title"
+);
 
 // Generate complete presentation
 const slides = [slideHTML];
@@ -82,43 +85,43 @@ const presentationHTML = RevealExporter.generateCompletePresentation(slides);
 
 ## 🎨 Animation Effects
 
-| Effect | Description |
-|--------|-------------|
-| `fade-in` | Default fade in animation |
-| `fade-up` | Slide up while fading in |
-| `fade-down` | Slide down while fading in |
-| `fade-left` | Slide left while fading in |
-| `fade-right` | Slide right while fading in |
-| `fade-out` | Start visible, fade out |
+| Effect             | Description                    |
+| ------------------ | ------------------------------ |
+| `fade-in`          | Default fade in animation      |
+| `fade-up`          | Slide up while fading in       |
+| `fade-down`        | Slide down while fading in     |
+| `fade-left`        | Slide left while fading in     |
+| `fade-right`       | Slide right while fading in    |
+| `fade-out`         | Start visible, fade out        |
 | `fade-in-then-out` | Fade in, then out on next step |
-| `highlight-red` | Turn text red |
-| `highlight-green` | Turn text green |
-| `highlight-blue` | Turn text blue |
-| `grow` | Scale up |
-| `shrink` | Scale down |
-| `strike` | Strike through |
+| `highlight-red`    | Turn text red                  |
+| `highlight-green`  | Turn text green                |
+| `highlight-blue`   | Turn text blue                 |
+| `grow`             | Scale up                       |
+| `shrink`           | Scale down                     |
+| `strike`           | Strike through                 |
 
 ## 🌐 Multi-language Support
 
 Built-in support for 5 languages with automatic browser detection:
 
 - 🇹🇷 **Turkish** (Türkçe)
-- 🇺🇸 **English** 
+- 🇺🇸 **English**
 - 🇪🇸 **Spanish** (Español)
 - 🇫🇷 **French** (Français)
 - 🇩🇪 **German** (Deutsch)
 
 ```javascript
-import { i18n } from 'quill-reveal-slide';
+import { i18n } from "quill-reveal-slide";
 
 // Change language
-i18n.setLanguage('en');
+i18n.setLanguage("en");
 
 // Get current language
 const currentLang = i18n.getCurrentLanguage();
 
 // Get translation
-const text = i18n.t('dialog.createFragment');
+const text = i18n.t("dialog.createFragment");
 ```
 
 ## 📝 Output Format
@@ -130,7 +133,9 @@ Fragments are exported as Reveal.js-compatible HTML:
   <div>
     <p>Regular paragraph text</p>
     <p class="fragment fade-up" data-fragment-index="1">First fragment</p>
-    <p class="fragment highlight-red" data-fragment-index="2">Second fragment</p>
+    <p class="fragment highlight-red" data-fragment-index="2">
+      Second fragment
+    </p>
   </div>
 </section>
 ```
@@ -140,15 +145,15 @@ Fragments are exported as Reveal.js-compatible HTML:
 Listen to fragment creation events for database storage:
 
 ```javascript
-quill.on('fragment-created', (fragmentData) => {
-  console.log('Fragment created:', fragmentData);
+quill.on("fragment-created", (fragmentData) => {
+  console.log("Fragment created:", fragmentData);
   // {
   //   id: 'fragment-1234567890',
   //   text: 'Selected text',
   //   effect: 'fade-up',
   //   index: 1
   // }
-  
+
   // Save to your database
   saveFragmentToDatabase(fragmentData);
 });
@@ -159,11 +164,11 @@ quill.on('fragment-created', (fragmentData) => {
 ### React Component
 
 ```jsx
-import React, { useEffect, useRef } from 'react';
-import Quill from 'quill';
-import { FragmentBlot } from 'quill-reveal-slide';
-import 'quill/dist/quill.snow.css';
-import 'quill-reveal-slide/style.css';
+import React, { useEffect, useRef } from "react";
+import Quill from "quill";
+import { FragmentBlot } from "quill-reveal-slide";
+import "quill/dist/quill.snow.css";
+import "quill-reveal-slide/style.css";
 
 function FragmentEditor() {
   const editorRef = useRef(null);
@@ -171,32 +176,32 @@ function FragmentEditor() {
 
   useEffect(() => {
     if (editorRef.current && !quillRef.current) {
-      Quill.register('formats/fragment', FragmentBlot);
-      
+      Quill.register("formats/fragment", FragmentBlot);
+
       quillRef.current = new Quill(editorRef.current, {
-        theme: 'snow',
+        theme: "snow",
         modules: {
           toolbar: {
             container: [
-              ['bold', 'italic'],
-              [{ 'custom-fragment': 'Fragment' }]
+              ["bold", "italic"],
+              [{ "custom-fragment": "Fragment" }],
             ],
             handlers: {
-              'custom-fragment': () => handleFragmentCreation(quillRef.current)
-            }
-          }
+              "custom-fragment": () => handleFragmentCreation(quillRef.current),
+            },
+          },
         },
       });
 
       // Listen to fragment events
-      quillRef.current.on('fragment-created', (data) => {
-        console.log('Fragment created:', data);
+      quillRef.current.on("fragment-created", (data) => {
+        console.log("Fragment created:", data);
         // Save to your backend
       });
     }
   }, []);
 
-  return <div ref={editorRef} style={{ height: '300px' }} />;
+  return <div ref={editorRef} style={{ height: "300px" }} />;
 }
 ```
 
@@ -208,35 +213,32 @@ function FragmentEditor() {
 </template>
 
 <script>
-import Quill from 'quill';
-import { FragmentBlot } from 'quill-reveal-slide';
+import Quill from "quill";
+import { FragmentBlot } from "quill-reveal-slide";
 
 export default {
   mounted() {
-    Quill.register('formats/fragment', FragmentBlot);
-    
+    Quill.register("formats/fragment", FragmentBlot);
+
     this.quill = new Quill(this.$refs.editor, {
-      theme: 'snow',
+      theme: "snow",
       modules: {
         toolbar: {
-          container: [
-            ['bold', 'italic'],
-            [{ 'custom-fragment': 'Fragment' }]
-          ],
+          container: [["bold", "italic"], [{ "custom-fragment": "Fragment" }]],
           handlers: {
-            'custom-fragment': () => this.handleFragment()
-          }
-        }
+            "custom-fragment": () => this.handleFragment(),
+          },
+        },
       },
     });
   },
-  
+
   methods: {
     handleFragment() {
       // Fragment creation logic
-    }
-  }
-}
+    },
+  },
+};
 </script>
 ```
 
@@ -247,8 +249,8 @@ export default {
 Main fragment format for Quill.js editor.
 
 ```javascript
-import { FragmentBlot } from 'quill-reveal-slide';
-Quill.register('formats/fragment', FragmentBlot);
+import { FragmentBlot } from "quill-reveal-slide";
+Quill.register("formats/fragment", FragmentBlot);
 ```
 
 ### RevealExporter
@@ -256,15 +258,18 @@ Quill.register('formats/fragment', FragmentBlot);
 Utility class for exporting to Reveal.js format.
 
 #### `generateRevealSlide(quillContents, slideTitle?)`
+
 - **quillContents**: Quill Delta contents
 - **slideTitle**: Optional slide title
 - **Returns**: HTML string for single slide
 
 #### `generateCompletePresentation(slides)`
+
 - **slides**: Array of slide HTML strings
 - **Returns**: Complete Reveal.js presentation HTML
 
 #### `getOrderedFragments(fragments)`
+
 - **fragments**: Array of fragment data
 - **Returns**: Fragments sorted by index
 
@@ -273,12 +278,15 @@ Utility class for exporting to Reveal.js format.
 Internationalization support.
 
 #### `setLanguage(lang)`
+
 - **lang**: Language code ('tr', 'en', 'es', 'fr', 'de')
 
 #### `getCurrentLanguage()`
+
 - **Returns**: Current language code
 
 #### `t(key)`
+
 - **key**: Translation key
 - **Returns**: Translated text
 
@@ -305,9 +313,9 @@ Internationalization support.
 ```javascript
 // Extend i18n with new language
 const customTranslations = {
-  'dialog.createFragment': {
-    'it': '🎭 Crea Frammento'
-  }
+  "dialog.createFragment": {
+    it: "🎭 Crea Frammento",
+  },
 };
 
 // Merge with existing translations
