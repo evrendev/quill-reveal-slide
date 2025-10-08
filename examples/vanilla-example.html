@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quill with Tags</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill-reveal-slide@1.0.0/dist/style.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="editor" style="height: 300px"></div>
+
+    <script type="module">
+      import Quill from "https://cdn.jsdelivr.net/npm/quill@2.0.3/+esm";
+      import {
+        TagModule,
+        TagBlot,
+      } from "https://cdn.jsdelivr.net/npm/quill-reveal-slide@1.0.0/+esm";
+
+      // Register modules
+      Quill.register({
+        "modules/tag": TagModule,
+        "formats/tag": TagBlot,
+      });
+
+      // Initialize editor
+      const quill = new Quill("#editor", {
+        theme: "snow",
+        modules: {
+          toolbar: [["bold", "italic"], ["link"]],
+          tag: true,
+        },
+      });
+    </script>
+  </body>
+</html>

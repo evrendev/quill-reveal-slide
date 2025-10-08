@@ -1,21 +1,23 @@
 {
   "name": "quill-reveal-slide",
   "private": false,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
-  "description": "A custom Quill.js module for tags, built with TypeScript and Vite.",
-  "main": "./dist/quill-tags.umd.js",
-  "module": "./dist/quill-tags.es.js",
+  "description": "A custom Quill.js module for creating tags by typing #hashtag and pressing space",
+  "main": "./dist/quill-reveal-slide.umd.js",
+  "module": "./dist/quill-reveal-slide.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/quill-tags.es.js",
-      "require": "./dist/quill-tags.umd.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/quill-reveal-slide.es.js",
+      "require": "./dist/quill-reveal-slide.umd.js"
     },
     "./style.css": "./dist/style.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "dev": "vite",
@@ -23,22 +25,29 @@
     "preview": "vite preview"
   },
   "peerDependencies": {
-    "quill": "^2.0.3"
+    "quill": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.7.0",
     "@types/quill": "^2.0.14",
+    "quill": "^2.0.3",
     "typescript": "^5.9.3",
     "vite": "^7.1.9"
-  },
-  "dependencies": {
-    "quill": "^2.0.3"
   },
   "keywords": [
     "quill",
     "quilljs",
     "typescript",
     "module",
-    "tags"
-  ]
+    "tags",
+    "hashtag",
+    "editor"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evrendev/quill-reveal-slide.git"
+  },
+  "homepage": "https://github.com/evrendev/quill-reveal-slide#readme"
 }
