@@ -212,6 +212,47 @@ const translations: Translations = {
     fr: "Surligner en Bleu",
     de: "Blau Hervorheben",
   },
+
+  // Page elements
+  "page.title": {
+    tr: "▣ Quill Reveal Slide Test",
+    en: "▣ Quill Reveal Slide Test",
+    es: "▣ Prueba de Quill Reveal Slide",
+    fr: "▣ Test Quill Reveal Slide",
+    de: "▣ Quill Reveal Slide Test",
+  },
+
+  "language.label": {
+    tr: "🌐 Dil:",
+    en: "🌐 Language:",
+    es: "🌐 Idioma:",
+    fr: "🌐 Langue:",
+    de: "🌐 Sprache:",
+  },
+
+  "editor.placeholder": {
+    tr: "Fragment editörünü test etmek için buraya yazmaya başlayın...",
+    en: "Start typing here to test the fragment editor...",
+    es: "Comienza a escribir aquí para probar el editor de fragmentos...",
+    fr: "Commencez à taper ici pour tester l'éditeur de fragments...",
+    de: "Beginnen Sie hier zu tippen, um den Fragment-Editor zu testen...",
+  },
+
+  "button.clearEvents": {
+    tr: "🗑️ Olayları Temizle",
+    en: "🗑️ Clear Events",
+    es: "🗑️ Limpiar Eventos",
+    fr: "🗑️ Effacer les Événements",
+    de: "🗑️ Ereignisse Löschen",
+  },
+
+  "events.log.empty": {
+    tr: "Henüz olay yok. Olayları görmek için fragment oluşturun...",
+    en: "No events yet. Create some fragments to see events here...",
+    es: "Aún no hay eventos. Crea algunos fragmentos para ver eventos aquí...",
+    fr: "Aucun événement pour le moment. Créez des fragments pour voir les événements ici...",
+    de: "Noch keine Ereignisse. Erstellen Sie Fragmente, um Ereignisse hier zu sehen...",
+  },
 };
 
 class I18n {

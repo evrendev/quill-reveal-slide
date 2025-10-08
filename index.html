@@ -2,135 +2,271 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>
-      Quil <h3 data-i18n="events.title">🎭 Fragment Events & Export</h3> <p
-      data-i18n="events.description">Fragment oluşturulduğunda
-      'fragment-created' event'i tetiklenir.</p> <button
-      onclick="window.exportToReveal()" data-i18n="button.exportToReveal"
-      style=" background: #007bff; color: white; border: none; padding: 8px
-      16px; border-radius: 4px; cursor: pointer; margin: 10px 0; " > 📤
-      Reveal.js'e Aktar </button>odule
-    </title>
+    <title data-i18n="page.title">Quill Reveal Slide - Test</title>
     <style>
       body {
-        font-family: sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         padding: 20px;
+        background: #f8f9fa;
+        margin: 0;
       }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+      }
+
+      .language-selector {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .language-selector select {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .instructions {
+        background: linear-gradient(135deg, #e8f5e8 0%, #f0f9f0 100%);
+        border-left: 4px solid #27ae60;
+        padding: 20px;
+        margin-bottom: 25px;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .instructions h3 {
+        margin: 0 0 15px 0;
+        color: #27ae60;
+      }
+
+      .instructions ol {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .instructions li {
+        margin-bottom: 8px;
+        line-height: 1.5;
+      }
+
+      .tip {
+        margin-top: 15px;
+        padding: 10px;
+        background: rgba(255, 193, 7, 0.1);
+        border-radius: 6px;
+        font-style: italic;
+        color: #856404;
+      }
+
       #editor {
         height: 300px;
-        border: 2px solid #ccc;
+        border: 2px solid #e9ecef;
         background: white;
         margin: 20px 0;
+        border-radius: 8px;
       }
+
       .ql-editor {
         min-height: 200px;
         font-size: 16px;
         line-height: 1.5;
       }
+
+      .export-section {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+
+      .export-section h3 {
+        margin: 0 0 15px 0;
+        color: #1976d2;
+      }
+
+      .export-button {
+        background: linear-gradient(135deg, #1976d2 0%, #7b1fa2 100%);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        margin: 10px 5px 10px 0;
+        transition: transform 0.2s ease;
+      }
+
+      .export-button:hover {
+        transform: translateY(-2px);
+      }
+
+      #events-log {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 6px;
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #e9ecef;
+        font-family: "Monaco", "Consolas", monospace;
+        font-size: 12px;
+        margin-top: 15px;
+      }
     </style>
   </head>
   <body>
-    <div
-      style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      "
-    >
-      <h1>Quill.js Reveal Slide Module Test</h1>
-      <div style="display: flex; align-items: center; gap: 10px">
-        <label for="language-selector" style="font-weight: bold"
-          >🌐 Language:</label
-        >
-        <select
-          id="language-selector"
-          style="padding: 8px; border-radius: 4px; border: 1px solid #ccc"
-        >
-          <option value="tr">🇹🇷 Türkçe</option>
-          <option value="en">🇺🇸 English</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="fr">🇫🇷 Français</option>
-          <option value="de">🇩🇪 Deutsch</option>
-        </select>
+    <div class="container">
+      <div class="header">
+        <h1 data-i18n="page.title">▣ Quill Reveal Slide Test</h1>
+        <div class="language-selector">
+          <label for="language-selector" data-i18n="language.label"
+            >🌐 Language:</label
+          >
+          <select id="language-selector">
+            <option value="tr">🇹🇷 Türkçe</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="de">🇩🇪 Deutsch</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="instructions">
+          <h3 data-i18n="instructions.title">📝 How to Create Fragments:</h3>
+          <ol>
+            <li data-i18n="instructions.step1">
+              <strong>Select text:</strong> Highlight the text you want to make
+              into a fragment
+            </li>
+            <li data-i18n="instructions.step2">
+              <strong>Click fragment button:</strong> Click the ▣ icon in the
+              toolbar
+            </li>
+            <li data-i18n="instructions.step3">
+              <strong>Choose animation:</strong> Select your desired effect in
+              the dialog
+            </li>
+            <li data-i18n="instructions.step4">
+              <strong>Set order:</strong> (Optional) Specify the fragment
+              appearance order
+            </li>
+            <li data-i18n="instructions.step5">
+              <strong>Create:</strong> Click "Create Fragment" button
+            </li>
+          </ol>
+          <div class="tip" data-i18n="instructions.tip">
+            💡 Tip: After creating fragments, you can export them to Reveal.js
+            format using the "Export to Reveal.js" button.
+          </div>
+        </div>
+
+        <div id="editor">
+          <p data-i18n="editor.placeholder">
+            Start typing here to test the fragment editor...
+          </p>
+        </div>
+
+        <div class="export-section">
+          <h3 data-i18n="events.title">▣ Fragment Events & Export</h3>
+          <p data-i18n="events.description">
+            The 'fragment-created' event is triggered when a fragment is
+            created.
+          </p>
+
+          <button
+            class="export-button"
+            onclick="window.exportToReveal()"
+            data-i18n="button.exportToReveal"
+          >
+            📤 Export to Reveal.js
+          </button>
+
+          <button
+            class="export-button"
+            onclick="window.clearEvents()"
+            data-i18n="button.clearEvents"
+          >
+            🗑️ Clear Events
+          </button>
+
+          <div id="events-log" data-i18n="events.log.empty">
+            No events yet. Create some fragments to see events here...
+          </div>
+        </div>
       </div>
     </div>
 
-    <div
-      style="
-        background: #f5f5f5;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 8px;
-      "
-    >
-      <h3>📝 Fragment Nasıl Oluşturulur:</h3>
-      <ol>
-        <li>
-          <strong>Metni seçin:</strong> Fragment yapmak istediğiniz metni
-          işaretleyin
-        </li>
-        <li>
-          <strong>Fragment butonuna tıklayın:</strong> Toolbar'da 🎭 simgesine
-          tıklayın
-        </li>
-        <li>
-          <strong>Animasyon seçin:</strong> Açılan pencerede istediğiniz efekti
-          seçin
-        </li>
-        <li>
-          <strong>Sıra belirtin:</strong> (Opsiyonel) Fragment'ın görünme
-          sırasını belirtin
-        </li>
-        <li><strong>Oluştur:</strong> "Fragment Oluştur" butonuna tıklayın</li>
-      </ol>
-      <p>
-        <em
-          >💡 İpucu: Fragment oluşturduktan sonra "Export to Reveal.js" butonu
-          ile Reveal.js formatında export edebilirsiniz.</em
-        >
-      </p>
-    </div>
+    <script type="module">
+      import { i18n } from "/src/i18n.ts";
 
-    <div id="editor">
-      <p>Start typing here...</p>
-    </div>
+      // Language switching functionality
+      function updatePageLanguage(lang) {
+        i18n.setLanguage(lang);
 
-    <div
-      style="
-        background: #e8f4f8;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 8px;
-      "
-    >
-      <h3>🎭 Fragment Events & Export</h3>
-      <p>Fragment oluşturulduğunda 'fragment-created' event'i tetiklenir.</p>
-      <button
-        onclick="window.exportToReveal()"
-        style="
-          background: #007bff;
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          cursor: pointer;
-          margin: 10px 0;
-        "
-      >
-        📤 Export to Reveal.js
-      </button>
-      <div
-        id="events-log"
-        style="
-          background: white;
-          padding: 10px;
-          border-radius: 4px;
-          max-height: 300px;
-          overflow-y: auto;
-        "
-      ></div>
-    </div>
+        // Update all elements with data-i18n attribute
+        const elementsToTranslate = document.querySelectorAll("[data-i18n]");
+        elementsToTranslate.forEach((element) => {
+          const key = element.getAttribute("data-i18n");
+          const translation = i18n.t(key);
+
+          if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+            element.placeholder = translation;
+          } else {
+            element.textContent = translation;
+          }
+        });
+
+        // Update document language
+        document.documentElement.lang = lang;
+      }
+
+      // Initialize language selector
+      const languageSelector = document.getElementById("language-selector");
+      languageSelector.value = i18n.getCurrentLanguage();
+      languageSelector.addEventListener("change", (e) => {
+        updatePageLanguage(e.target.value);
+      });
+
+      // Initial translation
+      updatePageLanguage(i18n.getCurrentLanguage());
+
+      // Clear events function
+      window.clearEvents = function () {
+        const eventsLog = document.getElementById("events-log");
+        eventsLog.textContent = i18n.t("events.log.empty");
+      };
+
+      // Make i18n available globally for dev.ts
+      window.i18n = i18n;
+    </script>
 
     <script type="module" src="/src/dev.ts"></script>
   </body>
