@@ -23,10 +23,83 @@
   </head>
   <body>
     <h1>Quill.js Reveal Slide Module Test</h1>
-    <p>Type <strong>#hello</strong> and press space to create a tag</p>
+
+    <div
+      style="
+        background: #f5f5f5;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 8px;
+      "
+    >
+      <h3>📝 Fragment Nasıl Oluşturulur:</h3>
+      <ol>
+        <li>
+          <strong>Metni seçin:</strong> Fragment yapmak istediğiniz metni
+          işaretleyin
+        </li>
+        <li>
+          <strong>Fragment butonuna tıklayın:</strong> Toolbar'da 🎭 simgesine
+          tıklayın
+        </li>
+        <li>
+          <strong>Animasyon seçin:</strong> Açılan pencerede istediğiniz efekti
+          seçin
+        </li>
+        <li>
+          <strong>Sıra belirtin:</strong> (Opsiyonel) Fragment'ın görünme
+          sırasını belirtin
+        </li>
+        <li><strong>Oluştur:</strong> "Fragment Oluştur" butonuna tıklayın</li>
+      </ol>
+      <p>
+        <em
+          >💡 İpucu: Fragment oluşturduktan sonra "Export to Reveal.js" butonu
+          ile Reveal.js formatında export edebilirsiniz.</em
+        >
+      </p>
+    </div>
+
     <div id="editor">
       <p>Start typing here...</p>
     </div>
+
+    <div
+      style="
+        background: #e8f4f8;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 8px;
+      "
+    >
+      <h3>🎭 Fragment Events & Export</h3>
+      <p>Fragment oluşturulduğunda 'fragment-created' event'i tetiklenir.</p>
+      <button
+        onclick="window.exportToReveal()"
+        style="
+          background: #007bff;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          cursor: pointer;
+          margin: 10px 0;
+        "
+      >
+        📤 Export to Reveal.js
+      </button>
+      <div
+        id="events-log"
+        style="
+          background: white;
+          padding: 10px;
+          border-radius: 4px;
+          max-height: 300px;
+          overflow-y: auto;
+        "
+      ></div>
+    </div>
+
     <script type="module" src="/src/dev.ts"></script>
   </body>
 </html>

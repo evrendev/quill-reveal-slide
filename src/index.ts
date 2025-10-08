@@ -1,5 +1,5 @@
 // src/index.ts
-import TagBlot from "./TagBlot";
-import TagModule from "./TagModule";
+import FragmentBlot from "./FragmentBlot";
+import { RevealExporter } from "./RevealExporter";
 
-export { TagBlot, TagModule };
+export { FragmentBlot, RevealExporter };

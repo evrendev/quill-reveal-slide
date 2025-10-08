@@ -1,10 +1,68 @@
-.ql-tag {
-  background-color: #e0e0e0;
-  border-radius: 12px;
-  padding: 3px 8px;
-  font-weight: 500;
-  color: #333;
+/* Custom Fragment Toolbar Button */
+.ql-toolbar .ql-custom-fragment {
+  width: 28px;
+  height: 28px;
+}
+
+.ql-toolbar .ql-custom-fragment:before {
+  content: "🎭";
+  font-size: 16px;
+}
+
+.ql-toolbar .ql-custom-fragment:hover {
+  background-color: #e3f2fd;
+}
+
+/* Fragment styles for editor preview */
+.fragment {
+  background-color: #f0f8ff;
+  border: 1px dashed #4a90e2;
+  border-radius: 8px;
+  padding: 4px 8px;
+  margin: 0 2px;
+  display: inline-block;
   cursor: default;
   user-select: none;
-  margin: 0 2px;
+}
+
+.fragment-indicator {
+  color: #4a90e2;
+  margin-right: 4px;
+  font-size: 0.9em;
+}
+
+/* Different fragment effect indicators */
+.fragment.fade-up {
+  border-color: #28a745;
+  background-color: #f0fff4;
+}
+
+.fragment.fade-out {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.fragment.highlight-red {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+.fragment.highlight-green {
+  border-color: #28a745;
+  background-color: #f0fff4;
+}
+
+.fragment.highlight-blue {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.fragment.grow {
+  border-color: #ffc107;
+  background-color: #fffbf0;
+}
+
+.fragment.shrink {
+  border-color: #6c757d;
+  background-color: #f8f9fa;
 }
