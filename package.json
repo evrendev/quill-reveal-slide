@@ -1,7 +1,7 @@
 {
   "name": "quill-reveal-slide",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.0",
   "type": "module",
   "description": "A custom Quill.js module for creating and managing reveal.js slide fragments.",
   "main": "./dist/quill-reveal-slide.umd.js",
