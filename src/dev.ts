@@ -2,13 +2,14 @@
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { FragmentBlot, RevealExporter } from "./index";
+import { i18n } from "./i18n";
 import "./quill-reveal-slide.css";
 
 // Fragment dialog handler
 function handleFragmentButton(quill: Quill) {
   const selection = quill.getSelection();
   if (!selection || selection.length === 0) {
-    alert("Lütfen fragment yapmak istediğiniz metni seçin!");
+    alert(i18n.t('ui.selectText'));
     return;
   }
 
@@ -39,22 +40,22 @@ function showFragmentDialog(
         background: white; padding: 20px; border-radius: 8px; 
         min-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       ">
-        <h3>🎭 Fragment Oluştur</h3>
-        <p><strong>Seçili Metin:</strong> "${selectedText}"</p>
+        <h3>${i18n.t('dialog.createFragment')}</h3>
+        <p><strong>${i18n.t('dialog.selectedText')}</strong> "${selectedText}"</p>
         
         <div style="margin: 15px 0;">
-          <label><strong>Animasyon Efekti:</strong></label><br>
+          <label><strong>${i18n.t('dialog.animationEffect')}</strong></label><br>
           <select id="fragment-effect" style="width: 100%; padding: 8px; margin-top: 5px;">
-            <option value="fade-in">Fade In (varsayılan)</option>
-            <option value="fade-up">Fade Up</option>
-            <option value="fade-down">Fade Down</option>
-            <option value="fade-left">Fade Left</option>
-            <option value="fade-right">Fade Right</option>
+            <option value="fade-in">${i18n.t('effect.fadeIn')}</option>
+            <option value="fade-up">${i18n.t('effect.fadeUp')}</option>
+            <option value="fade-down">${i18n.t('effect.fadeDown')}</option>
+            <option value="fade-left">${i18n.t('effect.fadeLeft')}</option>
+            <option value="fade-right">${i18n.t('effect.fadeRight')}</option>
             <option value="fade-out">Fade Out</option>
             <option value="fade-in-then-out">Fade In Then Out</option>
-            <option value="highlight-red">Highlight Red</option>
-            <option value="highlight-green">Highlight Green</option>
-            <option value="highlight-blue">Highlight Blue</option>
+            <option value="highlight-red">${i18n.t('effect.highlightRed')}</option>
+            <option value="highlight-green">${i18n.t('effect.highlightGreen')}</option>
+            <option value="highlight-blue">${i18n.t('effect.highlightBlue')}</option>
             <option value="grow">Grow</option>
             <option value="shrink">Shrink</option>
             <option value="strike">Strike</option>
@@ -62,7 +63,7 @@ function showFragmentDialog(
         </div>
         
         <div style="margin: 15px 0;">
-          <label><strong>Fragment Sırası (opsiyonel):</strong></label><br>
+          <label><strong>${i18n.t('dialog.fragmentOrder')}</strong></label><br>
           <input type="number" id="fragment-index" placeholder="1, 2, 3..." 
                  style="width: 100%; padding: 8px; margin-top: 5px;">
         </div>
@@ -71,11 +72,11 @@ function showFragmentDialog(
           <button id="fragment-cancel" style="
             background: #6c757d; color: white; border: none; 
             padding: 8px 16px; margin-right: 10px; border-radius: 4px; cursor: pointer;
-          ">İptal</button>
+          ">${i18n.t('button.cancel')}</button>
           <button id="fragment-confirm" style="
             background: #007bff; color: white; border: none; 
             padding: 8px 16px; border-radius: 4px; cursor: pointer;
-          ">Fragment Oluştur</button>
+          ">${i18n.t('button.createFragment')}</button>
         </div>
       </div>
     </div>
@@ -115,6 +116,17 @@ function showFragmentDialog(
       document.getElementById("fragment-modal")!.remove();
     }
   };
+}
+
+// Update UI text based on current language
+function updateUIText() {
+  const elements = document.querySelectorAll('[data-i18n]');
+  elements.forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    if (key) {
+      element.innerHTML = i18n.t(key);
+    }
+  });
 }
 
 try {
@@ -174,6 +186,24 @@ try {
   );
 
   (window as any).quill = quill;
+  
+  // Language selector initialization
+  const languageSelector = document.getElementById('language-selector') as HTMLSelectElement;
+  if (languageSelector) {
+    languageSelector.value = i18n.getCurrentLanguage();
+    languageSelector.addEventListener('change', (e) => {
+      const newLang = (e.target as HTMLSelectElement).value;
+      i18n.setLanguage(newLang);
+    });
+  }
+  
+  // Update UI when language changes
+  document.addEventListener('language-changed', () => {
+    updateUIText();
+  });
+  
+  // Initial UI update
+  updateUIText();
 
   // Export functionality for testing
   (window as any).exportToReveal = () => {
