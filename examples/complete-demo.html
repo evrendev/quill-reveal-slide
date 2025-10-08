@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quill Reveal Slide - Complete Demo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill-reveal-slide@1.0.0/dist/style.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .demo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 40px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 30px;
+        padding: 40px;
+      }
+
+      .editor-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 30px;
+      }
+
+      .sidebar {
+        background: #f1f3f4;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .language-selector {
+        margin-bottom: 20px;
+      }
+
+      .language-selector select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .instructions {
+        background: linear-gradient(135deg, #e8f5e8 0%, #f0f9f0 100%);
+        border-left: 4px solid #27ae60;
+        padding: 20px;
+        margin-bottom: 25px;
+        border-radius: 0 12px 12px 0;
+      }
+
+      .instructions h3 {
+        color: #27ae60;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      .instructions ol {
+        padding-left: 20px;
+      }
+
+      .instructions li {
+        margin-bottom: 8px;
+        line-height: 1.5;
+      }
+
+      #editor {
+        height: 400px;
+        margin-bottom: 25px;
+      }
+
+      .fragments-panel {
+        background: white;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #e1e5e9;
+      }
+
+      .fragments-panel h4 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 1rem;
+      }
+
+      .fragment-item {
+        background: #f8f9fa;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        border-left: 3px solid #3498db;
+        font-size: 12px;
+      }
+
+      .fragment-effect {
+        font-weight: bold;
+        color: #3498db;
+      }
+
+      .fragment-text {
+        color: #7f8c8d;
+        margin-top: 4px;
+      }
+
+      .export-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        padding: 25px;
+        margin-top: 20px;
+      }
+
+      .export-section h3 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+      }
+
+      .export-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        color: white;
+      }
+
+      .btn-warning {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        color: white;
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+      }
+
+      .output-area {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Monaco", "Menlo", monospace;
+        font-size: 12px;
+        max-height: 300px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        line-height: 1.4;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #e1e5e9;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #3498db;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: #7f8c8d;
+        margin-top: 4px;
+      }
+
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        backdrop-filter: blur(4px);
+      }
+
+      .modal-dialog {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        max-width: 450px;
+        width: 90%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        animation: modalShow 0.3s ease forwards;
+      }
+
+      @keyframes modalShow {
+        to {
+          transform: scale(1);
+        }
+      }
+
+      .modal-dialog h3 {
+        margin: 0 0 25px 0;
+        color: #2c3e50;
+        font-size: 1.4rem;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .effect-preview {
+        margin-top: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        font-size: 12px;
+        color: #7f8c8d;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 25px;
+      }
+
+      @media (max-width: 768px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+
+        .export-buttons {
+          grid-template-columns: 1fr;
+        }
+
+        .stats {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-container">
+      <div class="header">
+        <h1>🎭 Quill Reveal Slide</h1>
+        <p>Complete Interactive Demo - Create Amazing Presentation Fragments</p>
+      </div>
+
+      <div class="content">
+        <div class="editor-section">
+          <div class="instructions">
+            <h3>🚀 How to Create Fragments</h3>
+            <ol>
+              <li><strong>Select text</strong> in the editor below</li>
+              <li>
+                <strong>Click the 🎭 Fragment button</strong> in the toolbar
+              </li>
+              <li><strong>Choose animation effect</strong> and order</li>
+              <li><strong>See the preview</strong> in the sidebar</li>
+              <li><strong>Export to Reveal.js</strong> when ready</li>
+            </ol>
+          </div>
+
+          <div id="editor"></div>
+
+          <div class="export-section">
+            <h3>📤 Export Options</h3>
+            <div class="export-buttons">
+              <button class="btn btn-primary" onclick="exportSlide()">
+                📄 Export Slide
+              </button>
+              <button class="btn btn-success" onclick="exportPresentation()">
+                📊 Full Presentation
+              </button>
+              <button class="btn btn-warning" onclick="previewPresentation()">
+                👁️ Preview
+              </button>
+              <button class="btn btn-danger" onclick="clearAll()">
+                🗑️ Clear All
+              </button>
+            </div>
+
+            <div id="output" class="output-area" style="display: none"></div>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <div class="language-selector">
+            <label for="language">🌐 Language:</label>
+            <select id="language" onchange="changeLanguage(this.value)">
+              <option value="en">🇺🇸 English</option>
+              <option value="tr">🇹🇷 Türkçe</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="fr">🇫🇷 Français</option>
+              <option value="de">🇩🇪 Deutsch</option>
+            </select>
+          </div>
+
+          <div class="stats">
+            <div class="stat-card">
+              <div class="stat-number" id="fragmentCount">0</div>
+              <div class="stat-label">Fragments</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="wordCount">0</div>
+              <div class="stat-label">Words</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="charCount">0</div>
+              <div class="stat-label">Characters</div>
+            </div>
+          </div>
+
+          <div class="fragments-panel">
+            <h4>📋 Created Fragments</h4>
+            <div id="fragmentsList">
+              <p style="color: #7f8c8d; font-style: italic; font-size: 12px">
+                No fragments created yet. Select text and click the Fragment
+                button!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import Quill from "https://cdn.jsdelivr.net/npm/quill@2.0.3/+esm";
+      import {
+        FragmentBlot,
+        RevealExporter,
+        i18n,
+      } from "https://cdn.jsdelivr.net/npm/quill-reveal-slide@1.0.0/+esm";
+
+      // Register the fragment format
+      Quill.register({
+        "formats/fragment": FragmentBlot,
+      });
+
+      let quill;
+      let fragments = [];
+
+      // Effect descriptions
+      const effectDescriptions = {
+        "fade-in": "Slowly appears with fade effect",
+        "fade-up": "Slides up while fading in",
+        "fade-down": "Slides down while fading in",
+        "fade-left": "Slides left while fading in",
+        "fade-right": "Slides right while fading in",
+        "fade-out": "Starts visible, then fades out",
+        "fade-in-then-out": "Fades in, then out on next step",
+        "highlight-red": "Highlights text in red color",
+        "highlight-green": "Highlights text in green color",
+        "highlight-blue": "Highlights text in blue color",
+        grow: "Scales up with grow animation",
+        shrink: "Scales down with shrink animation",
+        strike: "Adds strike-through effect",
+      };
+
+      // Fragment creation handler
+      function handleFragmentCreation(quill) {
+        const selection = quill.getSelection();
+        if (!selection || selection.length === 0) {
+          alert(i18n.t("error.noSelection"));
+          return;
+        }
+
+        // Get selected text
+        const selectedText = quill.getText(selection.index, selection.length);
+
+        // Create modal dialog
+        const modal = document.createElement("div");
+        modal.className = "modal-overlay";
+
+        const dialog = document.createElement("div");
+        dialog.className = "modal-dialog";
+
+        dialog.innerHTML = `
+                <h3>🎭 ${i18n.t("dialog.createFragment")}</h3>
+                <div class="form-group">
+                    <label>${i18n.t("dialog.effect")}:</label>
+                    <select id="effect-select" class="form-control">
+                        <option value="fade-in">fade-in</option>
+                        <option value="fade-up">fade-up</option>
+                        <option value="fade-down">fade-down</option>
+                        <option value="fade-left">fade-left</option>
+                        <option value="fade-right">fade-right</option>
+                        <option value="fade-out">fade-out</option>
+                        <option value="fade-in-then-out">fade-in-then-out</option>
+                        <option value="highlight-red">highlight-red</option>
+                        <option value="highlight-green">highlight-green</option>
+                        <option value="highlight-blue">highlight-blue</option>
+                        <option value="grow">grow</option>
+                        <option value="shrink">shrink</option>
+                        <option value="strike">strike</option>
+                    </select>
+                    <div class="effect-preview" id="effect-preview">
+                        ${effectDescriptions["fade-in"]}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>${i18n.t("dialog.order")} (${i18n.t(
+          "dialog.optional"
+        )}):</label>
+                    <input type="number" id="order-input" min="1" max="100" class="form-control" placeholder="Auto">
+                </div>
+                <div class="form-group">
+                    <label>Selected Text Preview:</label>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; font-style: italic; max-height: 60px; overflow: hidden;">
+                        "${
+                          selectedText.length > 100
+                            ? selectedText.substring(0, 100) + "..."
+                            : selectedText
+                        }"
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button id="cancel-btn" class="btn" style="background: #95a5a6; color: white;">${i18n.t(
+                      "dialog.cancel"
+                    )}</button>
+                    <button id="create-btn" class="btn btn-primary">${i18n.t(
+                      "dialog.create"
+                    )}</button>
+                </div>
+            `;
+
+        modal.appendChild(dialog);
+        document.body.appendChild(modal);
+
+        // Effect preview update
+        document.getElementById("effect-select").onchange = function () {
+          const preview = document.getElementById("effect-preview");
+          preview.textContent =
+            effectDescriptions[this.value] || "Custom animation effect";
+        };
+
+        // Event handlers
+        document.getElementById("cancel-btn").onclick = () => {
+          document.body.removeChild(modal);
+        };
+
+        document.getElementById("create-btn").onclick = () => {
+          const effect = document.getElementById("effect-select").value;
+          const order = document.getElementById("order-input").value;
+
+          const fragmentData = {
+            effect,
+            index: order ? parseInt(order) : fragments.length + 1,
+          };
+
+          quill.format("fragment", fragmentData);
+
+          // Add to fragments array
+          const newFragment = {
+            id: `fragment-${Date.now()}`,
+            text: selectedText,
+            ...fragmentData,
+          };
+
+          fragments.push(newFragment);
+          updateFragmentsList();
+          updateStats();
+
+          // Emit event
+          quill.emitter.emit("fragment-created", newFragment);
+
+          document.body.removeChild(modal);
+        };
+
+        // Close on backdrop click
+        modal.onclick = (e) => {
+          if (e.target === modal) {
+            document.body.removeChild(modal);
+          }
+        };
+      }
+
+      // Initialize Quill
+      function initializeQuill() {
+        quill = new Quill("#editor", {
+          theme: "snow",
+          modules: {
+            toolbar: {
+              container: [
+                ["bold", "italic", "underline"],
+                ["link", "blockquote"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                [{ header: [1, 2, 3, false] }],
+                [{ "custom-fragment": "🎭 Fragment" }],
+              ],
+              handlers: {
+                "custom-fragment": function () {
+                  handleFragmentCreation(this.quill);
+                },
+              },
+            },
+          },
+        });
+
+        // Listen to text changes
+        quill.on("text-change", updateStats);
+
+        // Listen to fragment events
+        quill.on("fragment-created", (data) => {
+          console.log("Fragment created:", data);
+        });
+
+        // Add sample content
+        quill.setText(`Welcome to the Complete Quill Reveal Slide Demo!
+
+This is your presentation editor. You can create beautiful animated fragments that will work perfectly with Reveal.js presentations.
+
+Here's how to get started:
+
+1. Select any text (like this paragraph)
+2. Click the 🎭 Fragment button in the toolbar above
+3. Choose your animation effect
+4. Set the appearance order
+5. Watch the magic happen!
+
+Fragment Types You Can Create:
+• Fade animations (in, up, down, left, right, out)
+• Highlight effects (red, green, blue)
+• Transform effects (grow, shrink)
+• Text effects (strike-through)
+
+Try selecting different parts of this text and creating fragments with various effects. You'll see them listed in the sidebar, and you can export everything to Reveal.js format when you're ready.
+
+Have fun creating amazing presentations! 🚀`);
+
+        updateStats();
+      }
+
+      // Update fragments list
+      function updateFragmentsList() {
+        const container = document.getElementById("fragmentsList");
+
+        if (fragments.length === 0) {
+          container.innerHTML = `
+                    <p style="color: #7f8c8d; font-style: italic; font-size: 12px;">
+                        No fragments created yet. Select text and click the Fragment button!
+                    </p>
+                `;
+          return;
+        }
+
+        const sortedFragments = [...fragments].sort(
+          (a, b) => (a.index || 999) - (b.index || 999)
+        );
+
+        container.innerHTML = sortedFragments
+          .map(
+            (fragment) => `
+                <div class="fragment-item">
+                    <div class="fragment-effect">${fragment.effect}</div>
+                    <div style="font-size: 11px; color: #95a5a6;">Order: ${
+                      fragment.index || "Auto"
+                    }</div>
+                    <div class="fragment-text">"${
+                      fragment.text.length > 30
+                        ? fragment.text.substring(0, 30) + "..."
+                        : fragment.text
+                    }"</div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      // Update statistics
+      function updateStats() {
+        const text = quill.getText();
+        const words = text
+          .trim()
+          .split(/\s+/)
+          .filter((word) => word.length > 0).length;
+
+        document.getElementById("fragmentCount").textContent = fragments.length;
+        document.getElementById("wordCount").textContent = words;
+        document.getElementById("charCount").textContent = text.length;
+      }
+
+      // Export functions
+      window.exportSlide = function () {
+        const contents = quill.getContents();
+        const slideHTML = RevealExporter.generateRevealSlide(
+          contents,
+          "Generated Slide"
+        );
+        showOutput(slideHTML);
+      };
+
+      window.exportPresentation = function () {
+        const contents = quill.getContents();
+        const slideHTML = RevealExporter.generateRevealSlide(
+          contents,
+          "Generated Slide"
+        );
+        const presentationHTML = RevealExporter.generateCompletePresentation([
+          slideHTML,
+        ]);
+        showOutput(presentationHTML);
+      };
+
+      window.previewPresentation = function () {
+        const contents = quill.getContents();
+        const slideHTML = RevealExporter.generateRevealSlide(
+          contents,
+          "Live Preview"
+        );
+        const presentationHTML = RevealExporter.generateCompletePresentation([
+          slideHTML,
+        ]);
+
+        // Open in new window
+        const previewWindow = window.open("", "_blank");
+        previewWindow.document.write(presentationHTML);
+        previewWindow.document.close();
+      };
+
+      window.clearAll = function () {
+        if (
+          confirm(
+            "Are you sure you want to clear everything? This action cannot be undone."
+          )
+        ) {
+          quill.setText("");
+          fragments = [];
+          updateFragmentsList();
+          updateStats();
+          hideOutput();
+        }
+      };
+
+      window.changeLanguage = function (lang) {
+        i18n.setLanguage(lang);
+        // You could update UI text here if needed
+      };
+
+      function showOutput(content) {
+        const output = document.getElementById("output");
+        output.textContent = content;
+        output.style.display = "block";
+      }
+
+      function hideOutput() {
+        document.getElementById("output").style.display = "none";
+      }
+
+      // Initialize everything
+      initializeQuill();
+    </script>
+  </body>
+</html>

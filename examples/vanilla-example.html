@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Quill with Tags</title>
+    <title>Quill Reveal Slide - Fragment Example</title>
     <link
       href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"
       rel="stylesheet"
@@ -11,31 +11,279 @@
       href="https://cdn.jsdelivr.net/npm/quill-reveal-slide@1.0.0/dist/style.css"
       rel="stylesheet"
     />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f8f9fa;
+      }
+      .container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+      }
+      .subtitle {
+        color: #7f8c8d;
+        margin-bottom: 30px;
+      }
+      #editor {
+        height: 300px;
+        margin-bottom: 20px;
+      }
+      .export-section {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+      .buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+      .btn-primary {
+        background: #3498db;
+        color: white;
+      }
+      .btn-success {
+        background: #27ae60;
+        color: white;
+      }
+      .btn-primary:hover {
+        background: #2980b9;
+      }
+      .btn-success:hover {
+        background: #229954;
+      }
+      pre {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        max-height: 200px;
+      }
+      .instructions {
+        background: #e8f5e8;
+        border-left: 4px solid #27ae60;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 0 6px 6px 0;
+      }
+    </style>
   </head>
   <body>
-    <div id="editor" style="height: 300px"></div>
+    <div class="container">
+      <h1>🎭 Quill Reveal Slide</h1>
+      <p class="subtitle">Create animated presentation fragments with ease</p>
+
+      <div class="instructions">
+        <strong>How to use:</strong>
+        <ol>
+          <li>Select any text in the editor below</li>
+          <li>Click the 🎭 Fragment button in the toolbar</li>
+          <li>Choose animation effect and order</li>
+          <li>Export to Reveal.js format</li>
+        </ol>
+      </div>
+
+      <div id="editor"></div>
+
+      <div class="export-section">
+        <h3>Export Options</h3>
+        <div class="buttons">
+          <button class="btn-primary" onclick="exportSlide()">
+            Export Slide HTML
+          </button>
+          <button class="btn-success" onclick="exportPresentation()">
+            Export Full Presentation
+          </button>
+        </div>
+        <pre id="output"></pre>
+      </div>
+    </div>
 
     <script type="module">
       import Quill from "https://cdn.jsdelivr.net/npm/quill@2.0.3/+esm";
       import {
-        TagModule,
-        TagBlot,
+        FragmentBlot,
+        RevealExporter,
+        i18n,
       } from "https://cdn.jsdelivr.net/npm/quill-reveal-slide@1.0.0/+esm";
 
-      // Register modules
+      // Register the fragment format
       Quill.register({
-        "modules/tag": TagModule,
-        "formats/tag": TagBlot,
+        "formats/fragment": FragmentBlot,
       });
 
-      // Initialize editor
+      // Fragment creation handler
+      function handleFragmentCreation(quill) {
+        const selection = quill.getSelection();
+        if (!selection || selection.length === 0) {
+          alert(i18n.t("error.noSelection"));
+          return;
+        }
+
+        // Create modal dialog
+        const modal = document.createElement("div");
+        modal.style.cssText = `
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.5); display: flex; align-items: center;
+          justify-content: center; z-index: 10000;
+        `;
+
+        const dialog = document.createElement("div");
+        dialog.style.cssText = `
+          background: white; padding: 30px; border-radius: 12px;
+          max-width: 400px; width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        `;
+
+        dialog.innerHTML = `
+          <h3 style="margin: 0 0 20px 0; color: #2c3e50;">🎭 ${i18n.t(
+            "dialog.createFragment"
+          )}</h3>
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">${i18n.t(
+              "dialog.effect"
+            )}:</label>
+            <select id="effect-select" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+              <option value="fade-in">fade-in</option>
+              <option value="fade-up">fade-up</option>
+              <option value="fade-down">fade-down</option>
+              <option value="fade-left">fade-left</option>
+              <option value="fade-right">fade-right</option>
+              <option value="highlight-red">highlight-red</option>
+              <option value="highlight-green">highlight-green</option>
+              <option value="highlight-blue">highlight-blue</option>
+              <option value="grow">grow</option>
+              <option value="shrink">shrink</option>
+            </select>
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">${i18n.t(
+              "dialog.order"
+            )} (${i18n.t("dialog.optional")}):</label>
+            <input type="number" id="order-input" min="1" max="100" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+          </div>
+          <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button id="cancel-btn" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer;">${i18n.t(
+              "dialog.cancel"
+            )}</button>
+            <button id="create-btn" style="padding: 8px 16px; border: none; background: #3498db; color: white; border-radius: 4px; cursor: pointer;">${i18n.t(
+              "dialog.create"
+            )}</button>
+          </div>
+        `;
+
+        modal.appendChild(dialog);
+        document.body.appendChild(modal);
+
+        // Event handlers
+        document.getElementById("cancel-btn").onclick = () => {
+          document.body.removeChild(modal);
+        };
+
+        document.getElementById("create-btn").onclick = () => {
+          const effect = document.getElementById("effect-select").value;
+          const order = document.getElementById("order-input").value;
+
+          const fragmentData = {
+            effect,
+            index: order ? parseInt(order) : undefined,
+          };
+
+          quill.format("fragment", fragmentData);
+
+          // Emit event
+          quill.emitter.emit("fragment-created", {
+            id: `fragment-${Date.now()}`,
+            text: quill.getText(selection.index, selection.length),
+            ...fragmentData,
+          });
+
+          document.body.removeChild(modal);
+        };
+
+        // Close on backdrop click
+        modal.onclick = (e) => {
+          if (e.target === modal) {
+            document.body.removeChild(modal);
+          }
+        };
+      }
+
+      // Initialize Quill with custom toolbar
       const quill = new Quill("#editor", {
         theme: "snow",
         modules: {
-          toolbar: [["bold", "italic"], ["link"]],
-          tag: true,
+          toolbar: {
+            container: [
+              ["bold", "italic", "underline"],
+              ["link"],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ "custom-fragment": "🎭 Fragment" }],
+            ],
+            handlers: {
+              "custom-fragment": function () {
+                handleFragmentCreation(this.quill);
+              },
+            },
+          },
         },
       });
+
+      // Listen to fragment events
+      quill.on("fragment-created", (data) => {
+        console.log("Fragment created:", data);
+      });
+
+      // Add sample content
+      quill.setText(`Welcome to Quill Reveal Slide!
+
+This is a sample paragraph. Select this text and click the Fragment button to make it animated.
+
+You can create multiple fragments with different effects:
+- Fade animations
+- Highlight effects  
+- Scale transforms
+
+Try selecting different parts and creating fragments with various effects!`);
+
+      // Export functions
+      window.exportSlide = function () {
+        const contents = quill.getContents();
+        const slideHTML = RevealExporter.generateRevealSlide(
+          contents,
+          "My Sample Slide"
+        );
+        document.getElementById("output").textContent = slideHTML;
+      };
+
+      window.exportPresentation = function () {
+        const contents = quill.getContents();
+        const slideHTML = RevealExporter.generateRevealSlide(
+          contents,
+          "My Sample Slide"
+        );
+        const presentationHTML = RevealExporter.generateCompletePresentation([
+          slideHTML,
+        ]);
+        document.getElementById("output").textContent = presentationHTML;
+      };
     </script>
   </body>
 </html>
