@@ -34,7 +34,7 @@ class FragmentBlot extends Inline {
     node.setAttribute("contenteditable", "false");
 
     // Display text with fragment indicator
-    node.innerHTML = `<span class="fragment-indicator">🎭</span> ${value.text}`;
+    node.innerHTML = `<span class="fragment-indicator">▣</span> ${value.text}`;
 
     return node;
   }

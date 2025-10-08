@@ -63,7 +63,7 @@ function QuillFragmentEditor() {
               ['bold', 'italic', 'underline'],
               ['link'],
               [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-              [{ 'custom-fragment': '🎭 Fragment' }]
+              [{ 'custom-fragment': '▣ Fragment' }]
             ],
             handlers: {
               'custom-fragment': function() {

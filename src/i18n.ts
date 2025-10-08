@@ -18,11 +18,11 @@ const translations: Translations = {
 
   // Dialog Headers
   "dialog.createFragment": {
-    tr: "🎭 Fragment Oluştur",
-    en: "🎭 Create Fragment",
-    es: "🎭 Crear Fragmento",
-    fr: "🎭 Créer Fragment",
-    de: "🎭 Fragment Erstellen",
+    tr: "▣ Fragment Oluştur",
+    en: "▣ Create Fragment",
+    es: "▣ Crear Fragmento",
+    fr: "▣ Créer Fragment",
+    de: "▣ Fragment Erstellen",
   },
 
   "dialog.selectedText": {
@@ -92,11 +92,11 @@ const translations: Translations = {
   },
 
   "instructions.step2": {
-    tr: "Fragment butonuna tıklayın: Toolbar'da 🎭 simgesine tıklayın",
-    en: "Click fragment button: Click the 🎭 icon in the toolbar",
-    es: "Hacer clic en el botón de fragmento: Haz clic en el icono 🎭 en la barra de herramientas",
-    fr: "Cliquez sur le bouton fragment: Cliquez sur l'icône 🎭 dans la barre d'outils",
-    de: "Fragment-Button klicken: Klicken Sie auf das 🎭 Symbol in der Symbolleiste",
+    tr: "Fragment butonuna tıklayın: Toolbar'da ▣ simgesine tıklayın",
+    en: "Click fragment button: Click the ▣ icon in the toolbar",
+    es: "Hacer clic en el botón de fragmento: Haz clic en el icono ▣ en la barra de herramientas",
+    fr: "Cliquez sur le bouton fragment: Cliquez sur l'icône ▣ dans la barre d'outils",
+    de: "Fragment-Button klicken: Klicken Sie auf das ▣ Symbol in der Symbolleiste",
   },
 
   "instructions.step3": {
@@ -133,11 +133,11 @@ const translations: Translations = {
 
   // Events
   "events.title": {
-    tr: "🎭 Fragment Events & Export",
-    en: "🎭 Fragment Events & Export",
-    es: "🎭 Eventos de Fragmentos y Exportación",
-    fr: "🎭 Événements de Fragments et Export",
-    de: "🎭 Fragment-Ereignisse & Export",
+    tr: "▣ Fragment Events & Export",
+    en: "▣ Fragment Events & Export",
+    es: "▣ Eventos de Fragmentos y Exportación",
+    fr: "▣ Événements de Fragments et Export",
+    de: "▣ Fragment-Ereignisse & Export",
   },
 
   "events.description": {

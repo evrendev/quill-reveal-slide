@@ -135,7 +135,7 @@ export default {
               ["bold", "italic", "underline"],
               ["link"],
               [{ list: "ordered" }, { list: "bullet" }],
-              [{ "custom-fragment": "🎭 Fragment" }],
+              [{ "custom-fragment": "▣ Fragment" }],
             ],
             handlers: {
               "custom-fragment": () => this.handleFragmentCreation(),

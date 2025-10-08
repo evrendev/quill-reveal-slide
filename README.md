@@ -61,7 +61,7 @@ const quill = new Quill("#editor", {
 ### Creating Fragments
 
 1. **Select text** in the editor
-2. **Click the 🎭 fragment button** in the toolbar
+2. **Click the ▣ fragment button** in the toolbar
 3. **Choose animation effect** from the dialog
 4. **Set order** (optional) for fragment appearance sequence
 5. **Click "Create Fragment"**
