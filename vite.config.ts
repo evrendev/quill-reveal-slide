@@ -10,13 +10,12 @@ export default defineConfig(({ mode }) => {
     // Demo build configuration
     return {
       root: ".",
+      base: "/quill-reveal-slide/",
       build: {
         outDir: "demo-dist",
         emptyOutDir: true,
         rollupOptions: {
-          input: {
-            main: resolve(__dirname, "index.html"),
-          },
+          input: resolve(__dirname, "index.html"),
         },
       },
     };
