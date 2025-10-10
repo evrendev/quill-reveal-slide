@@ -1,11 +1,25 @@
-// src/dev.ts
+/**
+ * Development and Demo Module
+ * 
+ * This module provides development utilities and demo functionality for the
+ * Quill Reveal Slide plugin. It handles the initialization of the editor,
+ * fragment creation dialogs, and integration with the demo interface.
+ * 
+ * This file is primarily used for testing and demonstration purposes.
+ */
+
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { FragmentBlot, RevealExporter } from "./index";
 import { i18n } from "./i18n";
 import "./quill-reveal-slide.css";
 
-// Fragment dialog handler
+/**
+ * Handles the fragment button click in the toolbar
+ * Shows fragment creation dialog for selected text
+ * 
+ * @param quill - The Quill editor instance
+ */
 function handleFragmentButton(quill: Quill) {
   const selection = quill.getSelection();
   if (!selection || selection.length === 0) {
@@ -15,21 +29,26 @@ function handleFragmentButton(quill: Quill) {
 
   const selectedText = quill.getText(selection.index, selection.length);
   showFragmentDialog(selectedText, (fragmentData) => {
-    // Seçili metni fragment ile değiştir
+    // Replace selected text with fragment
     quill.deleteText(selection.index, selection.length);
     quill.insertEmbed(selection.index, "fragment", fragmentData);
 
-    // Fragment created event emit
+    // Emit fragment created event for listeners
     quill.emitter.emit("fragment-created", fragmentData);
   });
 }
 
-// Fragment dialog göster
+/**
+ * Display fragment creation dialog with configuration options
+ * 
+ * @param selectedText - The text that will become a fragment
+ * @param onConfirm - Callback function when fragment is confirmed
+ */
 function showFragmentDialog(
   selectedText: string,
   onConfirm: (data: any) => void
 ) {
-  // Modal HTML oluştur
+  // Create modal HTML structure
   const modalHTML = `
     <div id="fragment-modal" style="
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -92,10 +111,10 @@ function showFragmentDialog(
     </div>
   `;
 
-  // Modal'ı DOM'a ekle
+  // Add modal to DOM
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-  // Event listeners
+  // Set up event listeners for modal buttons
   document.getElementById("fragment-cancel")!.onclick = () => {
     document.getElementById("fragment-modal")!.remove();
   };
@@ -120,7 +139,7 @@ function showFragmentDialog(
     document.getElementById("fragment-modal")!.remove();
   };
 
-  // Modal dışına tıklayınca kapat
+  // Close modal when clicking outside of it
   document.getElementById("fragment-modal")!.onclick = (e) => {
     if (e.target === document.getElementById("fragment-modal")) {
       document.getElementById("fragment-modal")!.remove();
@@ -128,7 +147,10 @@ function showFragmentDialog(
   };
 }
 
-// Update UI text based on current language
+/**
+ * Update UI text elements based on current language
+ * Finds all elements with data-i18n attribute and updates their content
+ */
 function updateUIText() {
   const elements = document.querySelectorAll("[data-i18n]");
   elements.forEach((element) => {
@@ -139,11 +161,17 @@ function updateUIText() {
   });
 }
 
+/**
+ * Initialize the Quill editor and fragment functionality
+ * Sets up the editor with fragment support, event handlers, and UI integration
+ */
 try {
+  // Register the custom fragment blot with Quill
   Quill.register({
     "formats/fragment": FragmentBlot,
   });
 
+  // Initialize Quill editor with fragment support
   const quill = new Quill("#editor", {
     theme: "snow",
     modules: {
@@ -162,7 +190,7 @@ try {
     },
   });
 
-  // Fragment created event listener
+  // Set up fragment creation event listener
   quill.on(
     "fragment-created",
     (fragmentData: {
@@ -173,7 +201,7 @@ try {
     }) => {
       console.log("Fragment created:", fragmentData);
 
-      // Log to UI
+      // Log fragment creation to UI
       const eventsLog = document.getElementById("events-log");
       if (eventsLog) {
         const logEntry = document.createElement("div");
@@ -190,14 +218,15 @@ try {
         eventsLog.scrollTop = eventsLog.scrollHeight;
       }
 
-      // Here you can add your database save logic
+      // Placeholder for database integration
       // saveFragmentToYourDatabase(fragmentData);
     }
   );
 
+  // Make quill available globally for debugging
   (window as any).quill = quill;
 
-  // Language selector initialization
+  // Initialize language selector functionality
   const languageSelector = document.getElementById(
     "language-selector"
   ) as HTMLSelectElement;
@@ -209,21 +238,24 @@ try {
     });
   }
 
-  // Update UI when language changes
+  // Set up language change listener
   document.addEventListener("language-changed", () => {
     updateUIText();
   });
 
-  // Initial UI update
+  // Perform initial UI text update
   updateUIText();
 
-  // Export functionality for testing
+  /**
+   * Export functionality for testing and demonstration
+   * Converts current editor content to Reveal.js format
+   */
   (window as any).exportToReveal = () => {
     const contents = quill.getContents();
     const slideHTML = RevealExporter.generateRevealSlide(contents, "My Slide");
     console.log("Reveal.js Slide HTML:", slideHTML);
 
-    // Show in UI
+    // Display export result in UI
     const eventsLog = document.getElementById("events-log");
     if (eventsLog) {
       const logEntry = document.createElement("div");

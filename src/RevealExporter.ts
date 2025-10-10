@@ -1,15 +1,31 @@
-// src/RevealExporter.ts
+/**
+ * RevealExporter - Converts Quill content to Reveal.js presentation format
+ * 
+ * This class provides utilities to export Quill editor content containing
+ * fragments into reveal.js compatible HTML slides. It handles the conversion
+ * of Quill Delta operations to properly formatted reveal.js presentation slides.
+ */
 
+/**
+ * Interface defining the structure of fragment data
+ */
 interface FragmentData {
-  id: string;
-  text: string;
-  effect: string;
-  index?: number;
+  id: string;       // Unique identifier for the fragment
+  text: string;     // Text content of the fragment
+  effect: string;   // Animation effect (fade-in, fade-up, etc.)
+  index?: number;   // Optional fragment order index
 }
 
+/**
+ * RevealExporter class - Main export functionality for reveal.js presentations
+ */
 export class RevealExporter {
   /**
-   * Quill Delta formatından Reveal.js HTML formatına dönüştürür
+   * Converts Quill Delta format to Reveal.js HTML format
+   * Processes Quill operations and transforms them into reveal.js compatible HTML
+   * 
+   * @param quillContents - Quill editor contents in Delta format
+   * @returns HTML string formatted for reveal.js slides
    */
   static convertQuillToRevealSlide(quillContents: any): string {
     const ops = quillContents.ops || [];
@@ -18,15 +34,15 @@ export class RevealExporter {
 
     ops.forEach((op: any) => {
       if (typeof op.insert === "string") {
-        // Normal text - paragraph'lara ayır
+        // Handle normal text content - split into paragraphs
         const lines = op.insert.split("\n");
 
         lines.forEach((line: string, index: number) => {
           if (index === 0) {
-            // İlk satır mevcut paragraph'a ekle
+            // First line: append to current paragraph
             currentParagraph += line;
           } else {
-            // Yeni satır bulundu, mevcut paragraph'ı kapat
+            // New line found: close current paragraph and start new one
             if (currentParagraph.trim()) {
               html += `<p>${currentParagraph.trim()}</p>\n`;
             }
@@ -34,7 +50,7 @@ export class RevealExporter {
           }
         });
       } else if (op.insert.fragment) {
-        // Fragment - mevcut paragraph'ı kapat ve fragment ekle
+        // Handle fragment insertion - close current paragraph and add fragment
         if (currentParagraph.trim()) {
           html += `<p>${currentParagraph.trim()}</p>\n`;
           currentParagraph = "";
@@ -43,13 +59,13 @@ export class RevealExporter {
         const fragment = op.insert.fragment;
         html += this.createFragmentHTML(fragment);
       } else if (op.insert.tag) {
-        // Regular tag
+        // Handle regular tags (if any)
         const tag = op.insert.tag;
         currentParagraph += `<span class="tag">${tag.text}</span>`;
       }
     });
 
-    // Son paragraph'ı ekle
+    // Add the final paragraph if it has content
     if (currentParagraph.trim()) {
       html += `<p>${currentParagraph.trim()}</p>\n`;
     }
@@ -58,17 +74,20 @@ export class RevealExporter {
   }
 
   /**
-   * Fragment HTML'i oluşturur
+   * Creates HTML markup for a reveal.js fragment
+   * 
+   * @param fragment - Fragment data object containing text and configuration
+   * @returns HTML string for the fragment element
    */
   private static createFragmentHTML(fragment: FragmentData): string {
     let classes = "fragment";
 
-    // Effect ekle (default fade-in değilse)
+    // Add animation effect if it's not the default fade-in
     if (fragment.effect && fragment.effect !== "fade-in") {
       classes += ` ${fragment.effect}`;
     }
 
-    // Fragment index ekle
+    // Add fragment index attribute for ordering if specified
     const indexAttr =
       fragment.index !== undefined
         ? ` data-fragment-index="${fragment.index}"`
@@ -78,7 +97,11 @@ export class RevealExporter {
   }
 
   /**
-   * Tüm Quill içeriğini Reveal.js slide formatına dönüştürür
+   * Generates a complete reveal.js slide from Quill contents
+   * 
+   * @param quillContents - Quill editor contents in Delta format
+   * @param slideTitle - Optional title for the slide
+   * @returns Complete HTML slide section for reveal.js
    */
   static generateRevealSlide(quillContents: any, slideTitle?: string): string {
     const content = this.convertQuillToRevealSlide(quillContents);
@@ -93,10 +116,14 @@ export class RevealExporter {
   }
 
   /**
-   * Fragment'ları sıralı bir şekilde döndürür
+   * Returns fragments sorted by their index in the correct reveal order
+   * 
+   * @param fragments - Array of fragment data objects
+   * @returns Sorted array of fragments by index (fragments without index go last)
    */
   static getOrderedFragments(fragments: FragmentData[]): FragmentData[] {
     return fragments.sort((a, b) => {
+      // Fragments without index get value 999 to appear last
       const indexA = a.index !== undefined ? a.index : 999;
       const indexB = b.index !== undefined ? b.index : 999;
       return indexA - indexB;
@@ -104,7 +131,11 @@ export class RevealExporter {
   }
 
   /**
-   * Reveal.js sunumu için complete HTML template
+   * Generates a complete reveal.js presentation HTML template
+   * Creates a full HTML document with reveal.js dependencies and slides
+   * 
+   * @param slides - Array of slide HTML strings
+   * @returns Complete HTML document for reveal.js presentation
    */
   static generateCompletePresentation(slides: string[]): string {
     return `
@@ -123,6 +154,7 @@ export class RevealExporter {
   
   <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
   <script>
+    // Initialize reveal.js with basic configuration
     Reveal.initialize({
       hash: true,
       transition: 'slide'

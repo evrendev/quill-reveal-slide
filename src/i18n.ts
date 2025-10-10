@@ -1,13 +1,30 @@
-// src/i18n.ts
+/**
+ * Internationalization (i18n) Module
+ * 
+ * This module provides multilingual support for the Quill Reveal Slide plugin.
+ * It contains translations for UI elements, messages, and instructions in multiple languages.
+ * Currently supports: Turkish (tr), English (en), Spanish (es), French (fr), German (de)
+ * 
+ * @author Evren Yeniev
+ * @version 1.0.0
+ */
 
+/**
+ * Interface defining the structure for translation objects
+ * Each translation key maps to an object containing language codes and their respective translations
+ */
 interface Translations {
   [key: string]: {
     [lang: string]: string;
   };
 }
 
+/**
+ * Main translations object containing all UI text translations
+ * Organized by feature/component for easier maintenance
+ */
 const translations: Translations = {
-  // UI Messages
+  // UI Messages and prompts
   "ui.selectText": {
     tr: "Lütfen fragment yapmak istediğiniz metni seçin!",
     en: "Please select the text you want to make a fragment!",
@@ -16,7 +33,7 @@ const translations: Translations = {
     de: "Bitte wählen Sie den Text aus, den Sie zu einem Fragment machen möchten!",
   },
 
-  // Dialog Headers
+  // Dialog Headers and Labels
   "dialog.createFragment": {
     tr: "▣ Fragment Oluştur",
     en: "▣ Create Fragment",
@@ -49,7 +66,7 @@ const translations: Translations = {
     de: "Fragment-Reihenfolge (optional):",
   },
 
-  // Buttons
+  // Button Labels
   "button.cancel": {
     tr: "İptal",
     en: "Cancel",
@@ -74,7 +91,7 @@ const translations: Translations = {
     de: "📤 Nach Reveal.js Exportieren",
   },
 
-  // Instructions
+  // Instructions and Help Text
   "instructions.title": {
     tr: "📝 Fragment Nasıl Oluşturulur:",
     en: "📝 How to Create Fragments:",
@@ -255,23 +272,37 @@ const translations: Translations = {
   },
 };
 
+/**
+ * I18n Class - Internationalization Manager
+ * 
+ * Handles language detection, switching, and translation retrieval.
+ * Provides methods for managing multilingual support throughout the application.
+ */
 class I18n {
-  private currentLanguage: string = "tr";
+  private currentLanguage: string = "tr"; // Default language
 
+  /**
+   * Initialize the i18n system
+   * Detects browser language and loads saved language preference
+   */
   constructor() {
-    // Browser dilini algıla
+    // Detect browser language from navigator
     const browserLang = navigator.language.split("-")[0];
     if (this.isLanguageSupported(browserLang)) {
       this.currentLanguage = browserLang;
     }
 
-    // localStorage'dan dil tercihini al
+    // Load language preference from localStorage
     const savedLang = localStorage.getItem("fragment-editor-language");
     if (savedLang && this.isLanguageSupported(savedLang)) {
       this.currentLanguage = savedLang;
     }
   }
 
+  /**
+   * Set the current language and save preference
+   * @param lang - Language code to set (must be supported)
+   */
   setLanguage(lang: string) {
     if (this.isLanguageSupported(lang)) {
       this.currentLanguage = lang;
@@ -280,10 +311,18 @@ class I18n {
     }
   }
 
+  /**
+   * Get the currently active language code
+   * @returns Current language code (e.g., 'en', 'tr', 'es')
+   */
   getCurrentLanguage(): string {
     return this.currentLanguage;
   }
 
+  /**
+   * Get list of all supported languages with their display information
+   * @returns Array of language objects with code, name, and flag
+   */
   getSupportedLanguages(): Array<{ code: string; name: string; flag: string }> {
     return [
       { code: "tr", name: "Türkçe", flag: "🇹🇷" },
@@ -294,10 +333,22 @@ class I18n {
     ];
   }
 
+  /**
+   * Check if a language code is supported by the system
+   * @param lang - Language code to check
+   * @returns True if language is supported, false otherwise
+   */
   private isLanguageSupported(lang: string): boolean {
     return this.getSupportedLanguages().some((l) => l.code === lang);
   }
 
+  /**
+   * Get translated text for a given key
+   * Falls back to English if translation not found, then to the key itself
+   * 
+   * @param key - Translation key to look up
+   * @returns Translated text in current language or fallback
+   */
   t(key: string): string {
     const translation = translations[key];
     if (!translation) {
@@ -308,8 +359,12 @@ class I18n {
     return translation[this.currentLanguage] || translation["en"] || key;
   }
 
+  /**
+   * Update UI elements when language changes
+   * Dispatches a custom event for UI components to listen for language changes
+   */
   private updateUI() {
-    // UI güncellemesi için event gönder
+    // Dispatch event for UI updates
     document.dispatchEvent(
       new CustomEvent("language-changed", {
         detail: { language: this.currentLanguage },
@@ -318,4 +373,5 @@ class I18n {
   }
 }
 
+// Export singleton instance for use throughout the application
 export const i18n = new I18n();
