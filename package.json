@@ -13,7 +13,6 @@
       "import": "./dist/quill-reveal-slide.es.js",
       "require": "./dist/quill-reveal-slide.umd.js"
     },
-    "./style.css": "./dist/quill-reveal-slide.css",
     "./quill-reveal-slide.css": "./dist/quill-reveal-slide.css"
   },
   "files": [
