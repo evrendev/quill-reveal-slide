@@ -5,13 +5,13 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'README.md'
-      - 'docs/**'
+      - "README.md"
+      - "docs/**"
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,11 +47,11 @@ jobs:
           else
             npm version patch
           fi
-          
+
           # Get the new version
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "new_version=v$NEW_VERSION" >> $GITHUB_OUTPUT
-          
+
           # Push the new tag
           git push origin HEAD:main --tags
 
@@ -65,7 +65,7 @@ jobs:
           body: |
             ## Changes in this Release
             ${{ github.event.head_commit.message }}
-            
+
             ### Installation
             ```bash
             npm install quill-reveal-slide@${{ steps.version.outputs.new_version }}

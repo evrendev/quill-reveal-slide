@@ -6,19 +6,19 @@ import { defineConfig } from "vite";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ mode }) => {
-  if (mode === 'demo') {
+  if (mode === "demo") {
     // Demo build configuration
     return {
-      root: '.',
+      root: ".",
       build: {
-        outDir: 'demo-dist',
+        outDir: "demo-dist",
         emptyOutDir: true,
         rollupOptions: {
           input: {
-            main: resolve(__dirname, 'index.html')
-          }
-        }
-      }
+            main: resolve(__dirname, "index.html"),
+          },
+        },
+      },
     };
   }
 
