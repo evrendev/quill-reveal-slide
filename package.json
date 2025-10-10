@@ -1,7 +1,7 @@
 {
   "name": "quill-reveal-slide",
   "private": false,
-  "version": "1.0.0-alpha.0",
+  "version": "0.0.2",
   "type": "module",
   "description": "A custom Quill.js module for creating and managing reveal.js slide fragments.",
   "main": "./dist/quill-reveal-slide.umd.js",
@@ -47,7 +47,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/evrendev/quill-reveal-slide.git"
+    "url": "git+https://github.com/evrendev/quill-reveal-slide.git"
   },
   "homepage": "https://github.com/evrendev/quill-reveal-slide#readme"
 }

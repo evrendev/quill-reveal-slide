@@ -2,7 +2,7 @@
 
 A powerful Quill.js module that creates **Reveal.js-compatible fragments** with an intuitive toolbar interface and multi-language support. Transform any selected text into animated presentation fragments with just a few clicks.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-0.0.2-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Languages](https://img.shields.io/badge/languages-5-orange.svg)
 

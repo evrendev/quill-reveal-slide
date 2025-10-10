@@ -18,6 +18,10 @@ export default defineConfig({
         globals: {
           quill: "Quill",
         },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === "style.css") return "style.css";
+          return assetInfo.name || "asset";
+        },
       },
     },
     sourcemap: true,
