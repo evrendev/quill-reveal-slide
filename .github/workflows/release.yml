@@ -1,0 +1,79 @@
+name: Release and Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Bump version and create tag
+        id: version
+        run: |
+          # Detect if this is a breaking change, feature, or patch
+          if [[ "${{ github.event.head_commit.message }}" =~ ^(feat!|fix!|BREAKING) ]]; then
+            npm version major
+          elif [[ "${{ github.event.head_commit.message }}" =~ ^feat ]]; then
+            npm version minor
+          else
+            npm version patch
+          fi
+          
+          # Get the new version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "new_version=v$NEW_VERSION" >> $GITHUB_OUTPUT
+          
+          # Push the new tag
+          git push origin HEAD:main --tags
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.new_version }}
+          release_name: Release ${{ steps.version.outputs.new_version }}
+          body: |
+            ## Changes in this Release
+            ${{ github.event.head_commit.message }}
+            
+            ### Installation
+            ```bash
+            npm install quill-reveal-slide@${{ steps.version.outputs.new_version }}
+            ```
+          draft: false
+          prerelease: false
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
