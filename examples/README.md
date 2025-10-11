@@ -203,7 +203,7 @@ const text = i18n.t("dialog.createFragment");
 ```javascript
 const toolbar = [
   ["bold", "italic"],
-  [{ "custom-fragment": "▣ Fragment" }], // Custom fragment button
+  [{ fragment: "▣ Fragment" }], // Custom fragment button
 ];
 ```
 

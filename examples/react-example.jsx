@@ -63,10 +63,10 @@ function QuillFragmentEditor() {
               ['bold', 'italic', 'underline'],
               ['link'],
               [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-              [{ 'custom-fragment': '▣ Fragment' }]
+              [{ 'fragment': '▣ Fragment' }]
             ],
             handlers: {
-              'custom-fragment': function() {
+              'fragment': function() {
                 handleFragmentCreation(this.quill);
               }
             }

@@ -1,16 +1,16 @@
 /* Custom Fragment Toolbar Button */
-.ql-toolbar .ql-custom-fragment {
+.ql-toolbar .ql-fragment {
   width: 28px;
   height: 28px;
 }
 
-.ql-toolbar .ql-custom-fragment:before {
+.ql-toolbar .ql-fragment:before {
   content: "▣";
   font-size: 16px;
   font-weight: bold;
 }
 
-.ql-toolbar .ql-custom-fragment:hover {
+.ql-toolbar .ql-fragment:hover {
   background-color: #e3f2fd;
 }
 

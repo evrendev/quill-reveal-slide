@@ -585,10 +585,10 @@
                 ["link", "blockquote"],
                 [{ list: "ordered" }, { list: "bullet" }],
                 [{ header: [1, 2, 3, false] }],
-                [{ "custom-fragment": "▣ Fragment" }],
+                [{ fragment: "▣ Fragment" }],
               ],
               handlers: {
-                "custom-fragment": function () {
+                fragment: function () {
                   handleFragmentCreation(this.quill);
                 },
               },

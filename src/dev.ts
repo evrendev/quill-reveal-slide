@@ -1,10 +1,10 @@
 /**
  * Development and Demo Module
- * 
+ *
  * This module provides development utilities and demo functionality for the
  * Quill Reveal Slide plugin. It handles the initialization of the editor,
  * fragment creation dialogs, and integration with the demo interface.
- * 
+ *
  * This file is primarily used for testing and demonstration purposes.
  */
 
@@ -17,7 +17,7 @@ import "./quill-reveal-slide.css";
 /**
  * Handles the fragment button click in the toolbar
  * Shows fragment creation dialog for selected text
- * 
+ *
  * @param quill - The Quill editor instance
  */
 function handleFragmentButton(quill: Quill) {
@@ -40,7 +40,7 @@ function handleFragmentButton(quill: Quill) {
 
 /**
  * Display fragment creation dialog with configuration options
- * 
+ *
  * @param selectedText - The text that will become a fragment
  * @param onConfirm - Callback function when fragment is confirmed
  */
@@ -179,10 +179,10 @@ try {
         container: [
           ["bold", "italic"],
           ["link"],
-          [{ "custom-fragment": "Fragment" }], // Custom fragment button
+          [{ fragment: "Fragment" }], // Custom fragment button
         ],
         handlers: {
-          "custom-fragment": function () {
+          fragment: function () {
             handleFragmentButton(quill);
           },
         },

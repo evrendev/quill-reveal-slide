@@ -2,7 +2,7 @@
 
 A powerful Quill.js module that creates **Reveal.js-compatible fragments** with an intuitive toolbar interface and multi-language support. Transform any selected text into animated presentation fragments with just a few clicks.
 
-![Version](https://img.shields.io/badge/version-0.0.2-blue.svg)
+![Version](https://img.shields.io/badge/version-0.0.8-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Languages](https://img.shields.io/badge/languages-5-orange.svg)
 
@@ -46,10 +46,10 @@ const quill = new Quill("#editor", {
       container: [
         ["bold", "italic"],
         ["link"],
-        [{ "custom-fragment": "Fragment" }], // Fragment button
+        [{ fragment: "Fragment" }], // Fragment button
       ],
       handlers: {
-        "custom-fragment": function () {
+        fragment: function () {
           handleFragmentCreation(this.quill);
         },
       },
@@ -182,12 +182,9 @@ function FragmentEditor() {
         theme: "snow",
         modules: {
           toolbar: {
-            container: [
-              ["bold", "italic"],
-              [{ "custom-fragment": "Fragment" }],
-            ],
+            container: [["bold", "italic"], [{ fragment: "Fragment" }]],
             handlers: {
-              "custom-fragment": () => handleFragmentCreation(quillRef.current),
+              fragment: () => handleFragmentCreation(quillRef.current),
             },
           },
         },
@@ -224,9 +221,9 @@ export default {
       theme: "snow",
       modules: {
         toolbar: {
-          container: [["bold", "italic"], [{ "custom-fragment": "Fragment" }]],
+          container: [["bold", "italic"], [{ fragment: "Fragment" }]],
           handlers: {
-            "custom-fragment": () => this.handleFragment(),
+            fragment: () => this.handleFragment(),
           },
         },
       },

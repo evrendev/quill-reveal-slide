@@ -1,6 +1,6 @@
 /**
  * FragmentModule - Quill Module for Fragment Management
- * 
+ *
  * This module provides the toolbar functionality and user interaction handlers
  * for creating and managing reveal.js fragments within the Quill editor.
  * It integrates with Quill's toolbar system to provide fragment creation capabilities.
@@ -38,7 +38,7 @@ class FragmentModule extends Module {
       const handlers = toolbar.handlers || {};
 
       // Add custom fragment handler to the handlers collection
-      handlers["custom-fragment"] = () => {
+      handlers["fragment"] = () => {
         this.handleFragment();
       };
 
@@ -48,7 +48,7 @@ class FragmentModule extends Module {
       // Add click event listener to the fragment button
       // Using setTimeout to ensure DOM elements are fully rendered
       setTimeout(() => {
-        const button = toolbar.container?.querySelector(".ql-custom-fragment");
+        const button = toolbar.container?.querySelector(".ql-fragment");
         if (button && !button.onclick) {
           button.onclick = () => {
             this.handleFragment();
@@ -74,14 +74,14 @@ class FragmentModule extends Module {
 
     // Create fragment configuration object
     const fragmentValue = {
-      id: `fragment-${Date.now()}`,    // Generate unique ID using timestamp
-      text: text.trim(),               // Clean up whitespace from selected text
-      effect: "fade-in",               // Default animation effect
+      id: `fragment-${Date.now()}`, // Generate unique ID using timestamp
+      text: text.trim(), // Clean up whitespace from selected text
+      effect: "fade-in", // Default animation effect
     };
 
     // Apply fragment formatting to the selected text range
     this.quill.formatText(range.index, range.length, "fragment", fragmentValue);
-    
+
     // Move cursor to the end of the newly created fragment
     this.quill.setSelection(range.index + range.length);
   }
